@@ -21,7 +21,7 @@ export default function Application(props) {
     Promise.all([
       Promise.resolve(axios.get("api/days")),
       Promise.resolve(axios.get("api/appointments")),
-      Promise.resolve(axios.get("api/interviewers"))
+      Promise.resolve(axios.get("api/interviewers")),
     ]).then(all => {
       setState(prev => ({
           ...prev,
@@ -31,9 +31,9 @@ export default function Application(props) {
         }));
       });
   }, []);
+console.log(state.interviewers);
 
 const appointments = getAppointmentsForDay(state, state.day);
-
 const schedule = appointments.map(appointment => {
 const interview = getInterview(state, appointment.interview);
    return (
