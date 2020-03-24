@@ -11,6 +11,7 @@ export function getAppointmentsForDay(state, day) {
   return filteredAppointments;
 }
 
+
 export function getInterview(state, interview) {
   if (!interview) {
     return null;
@@ -18,4 +19,16 @@ export function getInterview(state, interview) {
   let interviewer = state.interviewers[interview.interviewer];
   return { ...interview, interviewer };
   }
+}
+
+export function getInterviewersForDay(state, day) {
+  const filteredAppointments = [];
+  state.days.forEach(element => {
+    if (element.name === day) {
+      element.interviewers.forEach(id => {
+        filteredAppointments.push(state.interviewers[id]);
+      });
+    }
+  });
+  return filteredAppointments;
 }
