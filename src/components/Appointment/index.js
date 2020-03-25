@@ -31,7 +31,6 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING, true);
-    console.log(mode)
     props
     .bookInterview(props.id, interview)
     .then(() => transition(SHOW))
@@ -40,13 +39,12 @@ export default function Appointment(props) {
 
   function deleteInterview(id) {
     transition(DELETING, true);
-    console.log(mode)
     props
      .cancelInterview(props.id)
      .then(() => transition(EMPTY))
      .catch(error => transition(ERROR_DELETE, true));
    }
-
+   
   return (
     <article className="appointment">
       <Header time={props.time} />

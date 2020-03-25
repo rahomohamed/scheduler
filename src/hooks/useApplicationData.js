@@ -17,7 +17,6 @@ export default function useApplicationData(props) {
       Promise.resolve(axios.get("api/appointments")),
       Promise.resolve(axios.get("api/interviewers"))
     ]).then(all => {
-      console.log(all);
       setState(prev => ({
         ...prev,
         days: all[0].data,
@@ -76,6 +75,5 @@ export default function useApplicationData(props) {
       })
     );
   }
-  console.log(state.interviewers);
   return { cancelInterview, bookInterview, state, setDay };
 }
