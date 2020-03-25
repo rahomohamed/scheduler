@@ -15,7 +15,41 @@ export default function Application(props) {
     interviewers: {},
   });
 
-  const setDay = day => setState({ ...state, day });
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return axios.put(`api/appointments/${id}`, appointment).then(() =>
+      setState({
+        ...state,
+        appointments
+      })
+    );
+  }
+
+function cancelInterview(id, interview) {
+  const appointment = {
+    ...state.appointments[id],
+    interview: {...interview}
+  };
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+  return axios.delete(`api/appointments/${id}`, appointment).then(() =>
+  setState({
+    ...state,
+    appointments
+  })
+  );
+}
+
+const setDay = day => setState({ ...state, day });
  
   useEffect(() => {
     Promise.all([
@@ -36,8 +70,8 @@ console.log(state.interviewers);
 
 const appointments = getAppointmentsForDay(state, state.day);
 const schedule = appointments.map(appointment => {
-const interview = getInterview(state, appointment.interview);
-const interviewers = getInterviewersForDay(state, state.day);
+  const interview = getInterview(state, appointment.interview);
+  const interviewers = getInterviewersForDay(state, state.day);
    return (
     <Appointment 
     key={appointment.id}
@@ -45,6 +79,8 @@ const interviewers = getInterviewersForDay(state, state.day);
     time={appointment.time}
     interview={interview}
     interviewers={interviewers}
+    bookInterview={bookInterview}
+    cancelInterview={cancelInterview}
     />
   );
 });
