@@ -32,10 +32,10 @@ export default function Application(props) {
     );
   }
 
-function cancelInterview(id, interview) {
+function cancelInterview(id) {
   const appointment = {
     ...state.appointments[id],
-    interview: {...interview}
+    interview: null
   };
   const appointments = {
     ...state.appointments,
