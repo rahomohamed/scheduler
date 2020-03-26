@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const getSpotsForDay = (day, appointments) =>
+  day.appointments.length -
+  day.appointments.reduce(
+    (count, id) => (appointments[id].interview ? count + 1 : count),
+    0
+  );
+
 export default function useApplicationData(props) {
   const [state, setState] = useState({
     day: "Monday",
@@ -13,9 +20,9 @@ export default function useApplicationData(props) {
 
   useEffect(() => {
     Promise.all([
-      Promise.resolve(axios.get("api/days")),
-      Promise.resolve(axios.get("api/appointments")),
-      Promise.resolve(axios.get("api/interviewers"))
+      Promise.resolve(axios.get("/api/days")),
+      Promise.resolve(axios.get("/api/appointments")),
+      Promise.resolve(axios.get("/api/interviewers"))
     ]).then(all => {
       setState(prev => ({
         ...prev,
@@ -31,24 +38,27 @@ export default function useApplicationData(props) {
       ...state.appointments[id],
       interview: { ...interview }
     };
+
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
 
-    const updateSpots = state.days.forEach(day => {
-    if (day.name === state.day) {
-    day.spots--;
-  }
-  return day;
-});
+      const days = state.days.map(day => {
+        if (day.appointments.includes(id)) {
+      return {...day, spots: getSpotsForDay(day, appointments)}
+      }
+      return day;
+    });
 
-    return axios.put(`api/appointments/${id}`, appointment).then(() =>
+    return axios.put(`api/appointments/${id}`, appointment).then(() => {
+      console.log("AFTER", appointment.interview);
       setState({
         ...state,
-        appointments
-      })
-    );
+        appointments,
+        days
+      });
+    });
   }
 
   function cancelInterview(id) {
@@ -61,9 +71,10 @@ export default function useApplicationData(props) {
       [id]: appointment
     };
 
-    const updateSpots = state.days.forEach(day => {
-      if (day.name === state.day) {
-      day.spots--;
+    // proper way to do this is build a new days array
+    const days = state.days.map(day => {
+      if (day.appointments.includes(id)) {
+    return {...day, spots: getSpotsForDay(day, appointments)}
     }
     return day;
   });
@@ -71,7 +82,8 @@ export default function useApplicationData(props) {
     return axios.delete(`api/appointments/${id}`, appointment).then(() =>
       setState({
         ...state,
-        appointments
+        appointments,
+        days
       })
     );
   }
