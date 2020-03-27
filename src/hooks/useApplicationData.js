@@ -5,8 +5,7 @@ const getSpotsForDay = (day, appointments) =>
   day.appointments.length -
   day.appointments.reduce(
     (count, id) => (appointments[id].interview ? count + 1 : count),
-    0
-  );
+    0);
 
 export default function useApplicationData(props) {
   const [state, setState] = useState({
