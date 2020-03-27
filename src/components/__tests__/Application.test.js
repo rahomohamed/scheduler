@@ -11,7 +11,6 @@ import {
   getByPlaceholderText, 
   queryByText,
   debug,
-  prettyDOM,
   queryByAltText,
   getByDisplayValue
 } from "@testing-library/react";
@@ -39,8 +38,6 @@ it("loads data, books an interview and reduces the spots remaining for Monday by
   const appointments = getAllByTestId(container, "appointment");
   const appointment = appointments[0];
   
-  console.log(prettyDOM(appointments))
-
   fireEvent.click(getByAltText(appointment, "Add"));
 
   fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {

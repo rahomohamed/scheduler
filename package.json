@@ -12,13 +12,13 @@
     "react-scripts": "3.0.0"
   },
   "scripts": {
+    "cypress": "cypress open -P .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public --ci",
-    "build-storybook": "build-storybook -s public",
-    "cypress": "cypress open -P ."
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": {
     "production": [

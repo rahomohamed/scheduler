@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+// function used to update spots
 const getSpotsForDay = (day, appointments) =>
   day.appointments.length -
   day.appointments.reduce(
@@ -42,7 +43,7 @@ export default function useApplicationData(props) {
       ...state.appointments,
       [id]: appointment
     };
-
+   // spots decreases by one once an appointment is added
       const days = state.days.map(day => {
         if (day.appointments.includes(id)) {
       return {...day, spots: getSpotsForDay(day, appointments)}
@@ -51,7 +52,6 @@ export default function useApplicationData(props) {
     });
 
     return axios.put(`api/appointments/${id}`, appointment).then(() => {
-      console.log("AFTER", appointment.interview);
       setState({
         ...state,
         appointments,
@@ -69,8 +69,7 @@ export default function useApplicationData(props) {
       ...state.appointments,
       [id]: appointment
     };
-
-    // proper way to do this is build a new days array
+   // spots increases by one once an appointment is deleted
     const days = state.days.map(day => {
       if (day.appointments.includes(id)) {
     return {...day, spots: getSpotsForDay(day, appointments)}
