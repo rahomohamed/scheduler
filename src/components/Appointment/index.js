@@ -25,6 +25,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+// once saved the interviewer and name will be saved and it will render a show component
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -37,6 +38,7 @@ export default function Appointment(props) {
     .catch(error => transition(ERROR_SAVE));
   }
 
+// the delete function will render an empty component
   function deleteInterview(id) {
     transition(DELETING, true);
     props
